@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Haven | Animal Adoption Tracker</title>
+
+    <style>
+        :root {
+            --coral: #D8755B;
+            --coral-dark: #B95745;
+            --coral-pale: #F8E5DE;
+            --blush: #F5F7F1;
+            --paper: #F5F7F1;
+            --ink: #29372F;
+            --muted: #77847B;
+            --line: #E2E9E0;
+            --olive: #42785C;
+            --white: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .topbar {
+            min-height: 75px;
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1px solid var(--line);
+            background: var(--paper);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--coral-pale);
+            color: var(--coral-dark);
+            font-size: 23px;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand-name span {
+            color: var(--coral);
+        }
+
+        .brand small {
+            display: block;
+            margin-top: 3px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--muted);
+        }
+
+        .account {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .account-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--olive);
+        }
+
+        main {
+            max-width: 1450px;
+            margin: auto;
+            padding: 32px 5% 50px;
+        }
+
+        /* Welcome section */
+
+        .welcome {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            min-height: 330px;
+            overflow: hidden;
+            border-radius: 23px;
+            background: var(--blush);
+            margin-bottom: 38px;
+        }
+
+        .welcome-copy {
+            padding: clamp(28px, 4vw, 55px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .eyebrow {
+            color: var(--coral-dark);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.2px;
+            text-transform: uppercase;
+        }
+
+        .welcome h1 {
+            font-family: Georgia, serif;
+            font-size: clamp(34px, 4vw, 53px);
+            line-height: 1.12;
+            font-weight: 500;
+            letter-spacing: -1.5px;
+            margin: 18px 0 14px;
+            color: var(--ink);
+        }
+
+        .welcome h1 span {
+            color: var(--coral-dark);
+            font-style: italic;
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.9;
+            max-width: 390px;
+            margin: 0 0 23px;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid var(--line);
+            color: var(--coral-dark);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .welcome-art {
+            position: relative;
+            min-height: 300px;
+            background: #E8F0E5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .art-circle {
+            width: min(76%, 330px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #F8E5DE;
+            position: absolute;
+        }
+
+        .art-emoji {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(100px, 15vw, 185px);
+            filter: drop-shadow(0 13px 9px rgba(75, 45, 35, .12));
+        }
+
+        .art-note {
+            position: absolute;
+            z-index: 2;
+            bottom: 25px;
+            right: 25px;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 6px 22px rgba(70, 40, 30, .08);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .art-note strong {
+            display: block;
+            color: var(--ink);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        /* Workspace */
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 38px;
+            align-items: start;
+        }
+
+        .side-intro {
+            padding-top: 5px;
+        }
+
+        .side-intro h2 {
+            font-family: Georgia, serif;
+            font-size: 25px;
+            font-weight: 500;
+            line-height: 1.35;
+            margin: 12px 0;
+        }
+
+        .side-intro p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.9;
+            margin: 0;
+        }
+
+        .side-rule {
+            width: 48px;
+            height: 3px;
+            background: var(--coral);
+            border-radius: 3px;
+            margin-top: 22px;
+        }
+
+        .directory {
+            min-width: 0;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 0 0 16px;
+        }
+
+        .section-heading h2 {
+            font-size: 16px;
+            margin: 0;
+            letter-spacing: -.3px;
+        }
+
+        .section-heading span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
+        }
+
+        .service {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            padding: 15px;
+            transition: border-color .18s, transform .18s,
+                        box-shadow .18s;
+        }
+
+        .service:hover {
+            border-color: #8BA994;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(48, 76, 66, .06);
+        }
+
+        .service-icon {
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--blush);
+            font-size: 21px;
+        }
+
+        .service:nth-child(3n + 2) .service-icon {
+            background: #E8F0E5;
+        }
+
+        .service:nth-child(3n) .service-icon {
+            background: #F8E5DE;
+        }
+
+        .service-copy {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .service-copy strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .service-copy small {
+            display: block;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .arrow {
+            flex-shrink: 0;
+            font-size: 17px;
+            color: #77847B;
+        }
+
+        .service:hover .arrow {
+            color: var(--coral);
+        }
+
+        .user-service {
+            border-color: #D6E0CC;
+        }
+
+        .user-service .service-icon {
+            background: #E8F0E5;
+        }
+
+        .note {
+            margin-top: 25px;
+            padding: 19px;
+            border-radius: 12px;
+            background: var(--blush);
+            border: 1px solid var(--line);
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--ink);
+        }
+
+        .note a {
+            display: inline-block;
+            margin-top: 12px;
+            background: var(--coral);
+            color: white;
+            border-radius: 8px;
+            padding: 10px 17px;
+            font-weight: 600;
+        }
+
+        .note a:hover {
+            background: var(--coral-dark);
+        }
+
+        .footer {
+            margin-top: 45px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 10px;
+            color: #77847B;
+        }
+
+        @media (max-width: 850px) {
+            .workspace {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .side-intro h2 {
+                margin-bottom: 8px;
+            }
+
+            .side-intro p {
+                max-width: 520px;
+            }
+
+            .side-rule {
+                margin-top: 14px;
+            }
+
+            .welcome {
+                grid-template-columns: 1fr 0.8fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .topbar {
+                padding: 13px 5%;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            main {
+                padding: 22px 5% 35px;
+            }
+
+            .welcome {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-copy {
+                padding: 27px;
+            }
+
+            .welcome-art {
+                min-height: 200px;
+            }
+
+            .art-emoji {
+                font-size: 115px;
+            }
+
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-icon">♡</div>
+        <div>
+            <div class="brand-name">haven<span>.</span></div>
+            <small>ANIMAL ADOPTION TRACKER</small>
+        </div>
+    </div>
+
+    <div class="account">
+        <span class="account-dot"></span>
+        <span id="accountText">Checking access...</span>
+    </div>
+</header>
+
+<main>
+    <section class="welcome">
+        <div class="welcome-copy">
+            <div class="eyebrow">A NEW BEGINNING STARTS HERE</div>
+
+            <h1>Small paws.<br><span>Big stories.</span></h1>
+
+            <p>
+                Behind every rescue is a chance to make a difference.
+                Manage the journey from a safe shelter to a loving home.
+            </p>
+
+            <div class="welcome-badge">
+                <span>✳</span>
+                <span>Every animal matters</span>
+            </div>
+        </div>
+
+        <div class="welcome-art" aria-label="Animal care illustration">
+            <div class="art-circle"></div>
+            <div class="art-emoji" aria-hidden="true">🐕</div>
+
+            <div class="art-note">
+                <strong>Care starts with us.</strong>
+                One step at a time.
+            </div>
+        </div>
+    </section>
+
+    <section class="workspace">
+        <aside class="side-intro">
+            <div class="eyebrow">YOUR WORKSPACE</div>
+            <h2>Good things happen when care has a home.</h2>
+            <p>
+                Everything you need to support animal welfare,
+                coordinate adoptions, and keep records organised
+                in one place.
+            </p>
+            <div class="side-rule"></div>
+        </aside>
+
+        <div class="directory" id="app">
+            <div class="note">Loading your workspace...</div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span>HAVEN · ANIMAL ADOPTION TRACKER</span>
+        <span>Made for better beginnings.</span>
+    </footer>
+</main>
+
+<script>
+    const ADMIN_APPS = [
+        {
+            i: '◷',
+            t: 'Dashboard',
+            s: 'Overview and activity',
+            u: '/dashboard/index.html'
+        },
+        {
+            i: '🐾',
+            t: 'Animals',
+            s: 'Manage animal records',
+            u: '/aat.admin.animals/index.html'
+        },
+        {
+            i: '⌂',
+            t: 'Shelters',
+            s: 'Capacity and locations',
+            u: '/aat.admin.shelters/index.html'
+        },
+        {
+            i: '▤',
+            t: 'Applications',
+            s: 'Review adoption requests',
+            u: '/aat.admin.applications/index.html'
+        },
+        {
+            i: '♡',
+            t: 'Health',
+            s: 'Checkups and treatment',
+            u: '/aat.admin.health/index.html'
+        },
+        {
+            i: '↗',
+            t: 'Adoptions',
+            s: 'Adoption records',
+            u: '/aat.admin.adoptions/index.html'
+        },
+        {
+            i: '⌕',
+            t: 'Inspections',
+            s: 'Post-adoption visits',
+            u: '/aat.admin.inspections/index.html'
+        },
+        {
+            i: '♙',
+            t: 'Users',
+            s: 'Adopter accounts',
+            u: '/aat.admin.users/index.html'
+        },
+        {
+            i: '≡',
+            t: 'Audit log',
+            s: 'Activity and changes',
+            u: '/aat.admin.auditlog/index.html'
+        }
+    ];
+
+    const USER_APPS = [
+        {
+            i: '🐾',
+            t: 'Adopter portal',
+            s: 'Discover pets and track applications',
+            u: '/portal/index.html'
+        }
+    ];
+
+    const esc = value =>
+        String(value ?? '').replace(/[&<>"']/g, char => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[char]));
+
+    function renderServices(list, userMode = false) {
+        return `
+            <div class="service-grid">
+                ${list.map(item => `
+                    <a class="service ${userMode ? 'user-service' : ''}"
+                       href="${esc(item.u)}">
+                        <div class="service-icon">${item.i}</div>
+                        <div class="service-copy">
+                            <strong>${esc(item.t)}</strong>
+                            <small>${esc(item.s)}</small>
+                        </div>
+                        <span class="arrow" aria-hidden="true">↗</span>
+                    </a>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    async function initialiseWorkspace() {
+        const app = document.getElementById('app');
+        const account = document.getElementById('accountText');
+
+        try {
+            const response = await fetch('/odata/v4/session/me()', {
+                headers: { Accept: 'application/json' }
+            });
+
+            if (!response.ok) {
+                throw new Error('not signed in');
+            }
+
+            const me = await response.json();
+
+            account.textContent = 'Signed in as ' + me.id;
+
+            let html = '';
+
+            if (me.isAdmin) {
+                html += `
+                    <section class="app-section">
+                        <div class="section-heading">
+                            <h2>Administration</h2>
+                            <span>9 services</span>
+                        </div>
+                        ${renderServices(ADMIN_APPS)}
+                    </section>
+                `;
+            }
+
+            if (me.isUser) {
+                html += `
+                    <section class="app-section">
+                        <div class="section-heading">
+                            <h2>Your adoption journey</h2>
+                            <span>Adopter services</span>
+                        </div>
+                        ${renderServices(USER_APPS, true)}
+                    </section>
+                `;
+            }
+
+            if (!html) {
+                html = `
+                    <div class="note">
+                        <strong>Your workspace isn't ready yet.</strong>
+                        <br>
+                        Your account does not currently have an assigned
+                        application role. Please contact an administrator
+                        to request access.
+                    </div>
+                `;
+            }
+
+            app.innerHTML = html;
+
+        } catch (error) {
+            account.textContent = 'Sign-in required';
+
+            app.innerHTML = `
+                <div class="note">
+                    <strong>Welcome! Please sign in to continue.</strong>
+                    <br>
+                    Sign in to access your animal adoption workspace.
+                    <br>
+                    <a href="/switch/index.html">Sign in</a>
+                </div>
+            `;
+        }
+    }
+
+    initialiseWorkspace();
+</script>
+
+<script src="/shared/i18n.js"></script>
+<script src="/shared/session-bar.js"></script>
+
+</body>
+</html>

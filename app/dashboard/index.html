@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haven | Dashboard</title>
+
+<style>
+:root {
+    --plum: #304C42;
+    --plum-light: #45695A;
+    --clay: #D8755B;
+    --clay-light: #F8E5DE;
+    --paper: #F5F7F1;
+    --white: #FFFFFF;
+    --ink: #29372F;
+    --muted: #77847B;
+    --line: #E2E9E0;
+    --green: #42785C;
+    --amber: #B47A2C;
+    --red: #B64E49;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.topbar {
+    min-height: 76px;
+    padding: 15px 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-mark {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px 14px 14px 4px;
+    background: var(--plum);
+    color: white;
+    font-size: 22px;
+}
+
+.brand h1 {
+    font-size: 19px;
+    letter-spacing: -0.5px;
+    margin: 0;
+    color: var(--plum);
+}
+
+.brand small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+nav { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+
+nav a {
+    padding: 10px 11px;
+    border-radius: 8px;
+    color: #66756A;
+    font-size: 12px;
+    transition: .2s;
+}
+
+nav a:hover, nav a.active {
+    background: var(--clay-light);
+    color: var(--plum);
+}
+
+main { max-width: 1420px; margin: auto; padding: 30px 4% 45px; }
+
+.page-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.eyebrow {
+    color: var(--clay);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.page-intro h2 {
+    margin: 8px 0 5px;
+    font-size: clamp(25px, 3vw, 34px);
+    letter-spacing: -1.2px;
+    color: var(--plum);
+}
+
+.page-intro p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+.actions { display: flex; align-items: center; gap: 12px; }
+#stamp { font-size: 11px; color: var(--muted); }
+
+button, .primary-link {
+    border: 0;
+    background: var(--plum);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    transition: .2s;
+}
+
+button:hover, .primary-link:hover { background: var(--plum-light); }
+
+.error {
+    display: none;
+    margin-bottom: 18px;
+    padding: 14px;
+    background: #F8E5DE;
+    color: #8F493C;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.overview {
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) minmax(250px, .85fr);
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.welcome-panel {
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
+    border-radius: 19px;
+    padding: 30px;
+    color: white;
+    background:
+        radial-gradient(circle at 90% 20%, rgba(255,255,255,.13) 0 60px, transparent 61px),
+        linear-gradient(125deg, #304C42 0%, #45695A 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.welcome-panel::after {
+    content: "♡";
+    position: absolute;
+    right: 22px;
+    bottom: -65px;
+    font-size: 240px;
+    font-weight: 300;
+    line-height: 1;
+    color: rgba(255,255,255,.055);
+    pointer-events: none;
+}
+
+.welcome-panel .eyebrow {
+    color: #F8E5DE;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-panel h3 {
+    max-width: 420px;
+    margin: 14px 0 12px;
+    font-size: clamp(27px, 3vw, 39px);
+    line-height: 1.15;
+    letter-spacing: -1.2px;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-panel p {
+    max-width: 390px;
+    color: #E8F0E5;
+    line-height: 1.8;
+    margin: 0 0 22px;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-panel .primary-link {
+    align-self: flex-start;
+    background: var(--clay);
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-panel .primary-link:hover { background: #B95745; }
+
+.metrics { display: flex; flex-direction: column; gap: 12px; }
+
+.metric {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    padding: 17px 19px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex: 1;
+}
+
+.metric-info { display: flex; flex-direction: column; gap: 7px; }
+.metric-label { color: var(--muted); font-size: 12px; }
+
+.metric-value {
+    font-size: 31px;
+    line-height: 1;
+    font-weight: 750;
+    letter-spacing: -1px;
+    color: var(--plum);
+}
+
+.metric-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    font-size: 21px;
+    background: var(--clay-light);
+}
+
+.metric:nth-child(2) .metric-icon { background: #E8F0E5; }
+.metric:nth-child(3) .metric-icon { background: #F8E5DE; }
+
+.content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.panel {
+    min-width: 0;
+    padding: 23px;
+    border-radius: 17px;
+    background: white;
+    border: 1px solid var(--line);
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 21px;
+}
+
+.panel-heading h3 {
+    margin: 0;
+    font-size: 17px;
+    color: var(--plum);
+    letter-spacing: -.3px;
+}
+
+.panel-heading p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.section-tag {
+    color: var(--clay);
+    background: var(--clay-light);
+    border-radius: 20px;
+    padding: 6px 9px;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.pipeline { display: flex; flex-direction: column; gap: 0; }
+
+.stage {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #E2E9E0;
+}
+
+.stage:last-child { border-bottom: 0; }
+
+.stage-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #E8F0E5;
+    color: var(--plum);
+    font-size: 15px;
+}
+
+.stage:nth-child(2) .stage-icon { background: #F8E5DE; }
+.stage:nth-child(3) .stage-icon { background: #E8F0E5; }
+.stage:nth-child(4) .stage-icon { background: #F8E5DE; }
+.stage:nth-child(5) .stage-icon { background: #E2E9E0; }
+
+.stage-name { font-weight: 600; font-size: 13px; }
+.stage-note { color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+.stage-count {
+    font-size: 19px;
+    font-weight: 750;
+    color: var(--plum);
+    min-width: 25px;
+    text-align: right;
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    align-items: end;
+    min-height: 190px;
+}
+
+.month-tile { text-align: center; min-width: 0; }
+.month-count { font-size: 12px; font-weight: 700; color: var(--plum); margin-bottom: 8px; }
+
+.month-column {
+    height: 115px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: #E8F0E5;
+    overflow: hidden;
+}
+
+.month-fill {
+    width: 100%;
+    min-height: 4px;
+    background: var(--clay);
+    border-radius: 6px 6px 2px 2px;
+    transition: height .4s;
+}
+
+.month-label { margin-top: 10px; font-size: 10px; color: var(--muted); }
+.month-tile.current .month-column { background: #E2E9E0; }
+.month-tile.current .month-fill { background: var(--plum); }
+
+.trend-footnote {
+    margin-top: 18px;
+    padding: 12px;
+    background: #F8E5DE;
+    border-radius: 10px;
+    color: #45695A;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.shelter-panel { margin-bottom: 22px; }
+
+.shelter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 13px;
+}
+
+.shelter-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ring {
+    width: 73px;
+    height: 73px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    position: relative;
+}
+
+.ring::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    background: white;
+    border-radius: 50%;
+}
+
+.ring span { z-index: 1; font-weight: 750; font-size: 14px; color: var(--plum); }
+
+.shelter-name {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.shelter-location {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+.shelter-capacity { margin-top: 7px; font-size: 11px; color: var(--plum); }
+
+.health-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: #E8F0E5;
+    border: 1px solid #E2E9E0;
+    border-radius: 16px;
+    padding: 22px 25px;
+}
+
+.health-left { display: flex; align-items: center; gap: 15px; }
+
+.health-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    background: white;
+}
+
+.health-panel h3 { color: var(--plum); font-size: 15px; margin: 0 0 6px; }
+
+.health-panel p {
+    color: #45695A;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.health-count { font-size: 30px; font-weight: 800; color: var(--plum); text-align: right; }
+
+.health-count small {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    color: var(--muted);
+    margin-top: 3px;
+}
+
+.empty { padding: 18px 0; color: var(--muted); line-height: 1.6; font-size: 13px; }
+
+footer { text-align: center; color: #77847B; font-size: 11px; padding: 26px 0 0; }
+
+@media (max-width: 900px) {
+    .overview { grid-template-columns: 1fr; }
+    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .metric { padding: 15px; align-items: flex-start; }
+    .metric-icon { display: none; }
+    .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .topbar { padding: 15px 5%; }
+    nav { width: 100%; }
+    nav a { padding: 8px; }
+    main { padding: 23px 5%; }
+    .welcome-panel { padding: 24px; }
+    .metrics { grid-template-columns: 1fr; }
+    .metric { flex-direction: row; align-items: center; }
+    .metric-icon { display: grid; }
+    .panel { padding: 17px; }
+    .month-grid { gap: 5px; }
+    .month-column { height: 90px; }
+    .health-panel { align-items: flex-start; padding: 17px; }
+    .health-count { font-size: 25px; }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-mark">✦</div>
+        <div>
+            <h1>Haven</h1>
+            <small>ANIMAL ADOPTION TRACKER</small>
+        </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+        <a href="/landing/index.html">Home</a>
+        <a href="/aat.admin.animals/index.html">Animals</a>
+        <a href="/aat.admin.shelters/index.html">Shelters</a>
+        <a href="/aat.admin.applications/index.html">Applications</a>
+        <a href="/aat.admin.health/index.html">Health</a>
+        <a href="/aat.admin.adoptions/index.html">Adoptions</a>
+        <a href="/aat.admin.inspections/index.html">Inspections</a>
+        <a href="/aat.admin.users/index.html">Users</a>
+        <a href="/aat.admin.auditlog/index.html">Audit log</a>
+    </nav>
+</header>
+
+<main>
+    <div class="error" id="err" role="alert"></div>
+
+    <section class="page-intro">
+        <div>
+            <h2>Your haven.</h2>
+            </div>
+
+        <div class="actions">
+            <small id="stamp">Loading data...</small>
+            <button id="refresh" type="button">↻ Refresh</button>
+        </div>
+    </section>
+
+    <section class="overview">
+        <div class="welcome-panel">
+            <div class="eyebrow">A LITTLE CARE GOES A LONG WAY</div>
+            <h3>Better care.<br>Brighter beginnings.</h3>
+            <a class="primary-link" href="/aat.admin.animals/index.html">
+                + Manage animals
+            </a>
+        </div>
+
+        <div class="metrics" id="metrics">
+            <div class="metric">
+                <div class="metric-info">
+                    <span class="metric-label">Total animals</span>
+                    <span class="metric-value">—</span>
+                </div>
+                <span class="metric-icon">🐾</span>
+            </div>
+            <div class="metric">
+                <div class="metric-info">
+                    <span class="metric-label">Awaiting a home</span>
+                    <span class="metric-value">—</span>
+                </div>
+                <span class="metric-icon">♡</span>
+            </div>
+            <div class="metric">
+                <div class="metric-info">
+                    <span class="metric-label">Adopted</span>
+                    <span class="metric-value">—</span>
+                </div>
+                <span class="metric-icon">✓</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-grid">
+        <article class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h3>Adoption journey</h3>
+                    <p>Applications moving through the process</p>
+                </div>
+                <span class="section-tag">PIPELINE</span>
+            </div>
+            <div class="pipeline" id="pipeline">
+                <div class="empty">Loading application information...</div>
+            </div>
+        </article>
+
+        <article class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h3>Adoption activity</h3>
+                    <p>Monthly adoption counts over the last six months</p>
+                </div>
+                <span class="section-tag">6 MONTHS</span>
+            </div>
+            <div class="month-grid" id="monthly">
+                <div class="empty">Loading adoption activity...</div>
+            </div>
+            <div class="trend-footnote" id="trendNote">
+                Adoption activity will appear here when data is available.
+            </div>
+        </article>
+    </section>
+
+    <section class="panel shelter-panel">
+        <div class="panel-heading">
+            <div>
+                <h3>Shelter capacity</h3>
+                <p>Space available across registered shelters</p>
+            </div>
+            <a class="section-tag" href="/aat.admin.shelters/index.html">VIEW SHELTERS ↗</a>
+        </div>
+        <div class="shelter-grid" id="shelters">
+            <div class="empty">Loading shelter information...</div>
+        </div>
+    </section>
+
+    <section class="health-panel">
+        <div class="health-left">
+            <div class="health-icon">♡</div>
+            <div>
+                <h3>Health follow-up</h3>
+                <p>Animals with overdue checkups need attention.</p>
+            </div>
+        </div>
+        <div class="health-count">
+            <span id="overdue">—</span>
+            <small>OVERDUE CHECKUPS</small>
+        </div>
+    </section>
+
+    <footer>
+        Rescue Desk · Animal Adoption Tracker · Admin workspace
+    </footer>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+}[c]));
+
+async function api(path) {
+    const response = await fetch('/odata/v4/admin/' + path, {
+        headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) {
+        throw new Error(
+            'Request failed (' + response.status +
+            '). Check your Admin login and backend service.'
+        );
+    }
+
+    return response.json();
+}
+
+function renderMetrics(summary, overdueCount) {
+    $('metrics').innerHTML = `
+        <div class="metric">
+            <div class="metric-info">
+                <span class="metric-label">Total animals</span>
+                <span class="metric-value">${Number(summary.totalAnimals) || 0}</span>
+            </div>
+            <span class="metric-icon">🐾</span>
+        </div>
+        <div class="metric">
+            <div class="metric-info">
+                <span class="metric-label">Awaiting a home</span>
+                <span class="metric-value">${Number(summary.available) || 0}</span>
+            </div>
+            <span class="metric-icon">♡</span>
+        </div>
+        <div class="metric">
+            <div class="metric-info">
+                <span class="metric-label">Adopted</span>
+                <span class="metric-value">${Number(summary.adopted) || 0}</span>
+            </div>
+            <span class="metric-icon">✓</span>
+        </div>
+    `;
+    $('overdue').textContent = overdueCount;
+}
+
+function renderPipeline(rows) {
+    const stages = [
+        { name: 'Submitted', icon: '↗', note: 'New applications' },
+        { name: 'Under Review', icon: '⌕', note: 'Being assessed' },
+        { name: 'Approved', icon: '✓', note: 'Ready to progress' },
+        { name: 'Rejected', icon: '×', note: 'Not proceeding' },
+        { name: 'Withdrawn', icon: '↩', note: 'Withdrawn applications' }
+    ];
+
+    const counts = Object.fromEntries(
+        rows.map(item => [item.status, Number(item.count) || 0])
+    );
+
+    $('pipeline').innerHTML = stages.map(stage => `
+        <div class="stage">
+            <div class="stage-icon">${stage.icon}</div>
+            <div>
+                <div class="stage-name">${esc(stage.name)}</div>
+                <div class="stage-note">${esc(stage.note)}</div>
+            </div>
+            <div class="stage-count">${counts[stage.name] || 0}</div>
+        </div>
+    `).join('');
+}
+
+function renderMonthly(rows) {
+    const now = new Date();
+    const months = [];
+
+    for (let i = 5; i >= 0; i--) {
+        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+
+        months.push({
+            key: date.getFullYear() + '-' +
+                String(date.getMonth() + 1).padStart(2, '0'),
+            label: date.toLocaleString(undefined, { month: 'short' }),
+            current: i === 0
+        });
+    }
+
+    const counts = Object.fromEntries(
+        rows.map(row => [row.period, Number(row.count) || 0])
+    );
+
+    const values = months.map(month => counts[month.key] || 0);
+    const max = Math.max(1, ...values);
+
+    $('monthly').innerHTML = months.map((month, index) => {
+        const value = values[index];
+        const height = value === 0 ? 4 : Math.max(8, value / max * 100);
+
+        return `
+            <div class="month-tile ${month.current ? 'current' : ''}">
+                <div class="month-count">${value}</div>
+                <div class="month-column">
+                    <div class="month-fill" style="height:${height}%"></div>
+                </div>
+                <div class="month-label">${esc(month.label)}</div>
+            </div>
+        `;
+    }).join('');
+
+    const total = values.reduce((sum, value) => sum + value, 0);
+    $('trendNote').textContent =
+        total + ' adoption' + (total === 1 ? '' : 's') +
+        ' recorded across the six-month period.';
+}
+
+function renderShelters(rows) {
+    if (!rows.length) {
+        $('shelters').innerHTML =
+            '<div class="empty">No shelters have been registered yet.</div>';
+        return;
+    }
+
+    $('shelters').innerHTML = rows.map(shelter => {
+        const capacity = Math.max(0, Number(shelter.totalCapacity) || 0);
+        const occupied = Math.max(0, Number(shelter.currentOccupancy) || 0);
+        const rawPct = Number(shelter.occupancyPct);
+        const pct = Math.min(100, Math.max(0,
+            Number.isFinite(rawPct)
+                ? rawPct
+                : (capacity ? occupied / capacity * 100 : 0)
+        ));
+
+        const color = pct >= 90
+            ? 'var(--red)'
+            : pct >= 70
+                ? 'var(--amber)'
+                : 'var(--green)';
+
+        return `
+            <div class="shelter-card">
+                <div class="ring"
+                     style="background:conic-gradient(${color} ${pct}%, #E2E9E0 0)">
+                    <span>${Math.round(pct)}%</span>
+                </div>
+                <div>
+                    <div class="shelter-name">${esc(shelter.shelterName)}</div>
+                    <div class="shelter-location">${esc(shelter.location || 'Location not provided')}</div>
+                    <div class="shelter-capacity">
+                        ${occupied} occupied · ${capacity} places
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+async function loadDashboard() {
+    $('err').style.display = 'none';
+    $('refresh').disabled = true;
+    $('refresh').textContent = 'Loading...';
+
+    try {
+        const summary = await api('getAnimalSummary()');
+
+        const [distribution, trend, shelters, overdue] = await Promise.all([
+            api('getApplicationStatusDistribution()'),
+            api('getAdoptionTrend(months=6)'),
+            api('getShelterOccupancy()'),
+            api('getOverdueCheckups()')
+        ]);
+
+        renderMetrics(summary, overdue.value.length);
+        renderPipeline(distribution.value);
+        renderMonthly(trend.value);
+        renderShelters(shelters.value);
+
+        $('stamp').textContent =
+            'Updated ' + new Date().toLocaleTimeString();
+    } catch (error) {
+        $('err').textContent = error.message;
+        $('err').style.display = 'block';
+    } finally {
+        $('refresh').disabled = false;
+        $('refresh').textContent = '↻ Refresh';
+    }
+}
+
+$('refresh').addEventListener('click', loadDashboard);
+loadDashboard();
+</script>
+
+<script src="/shared/i18n.js"></script>
+<script src="/shared/session-bar.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Haven | Choose Account</title>
+
+    <style>
+        :root {
+            --forest: #304C42;
+            --forest-light: #45695A;
+            --coral: #D8755B;
+            --cream: #F5F7F1;
+            --ink: #29372F;
+            --muted: #77847B;
+            --border: #E2E9E0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top {
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border);
+            padding: 20px 6%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            background: var(--forest);
+            color: #FFFFFF;
+            border-radius: 14px 14px 14px 4px;
+            font: 700 25px Georgia, serif;
+        }
+
+        .brand-name {
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--forest);
+        }
+
+        .brand-name span {
+            color: var(--coral);
+        }
+
+        .brand-tagline {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 1.4px;
+        }
+
+        .page {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 480px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 12px 40px rgba(48, 76, 66, .06);
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #E8F0E5;
+            color: var(--forest);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 18px 0 9px;
+            color: var(--forest);
+            font-size: 30px;
+            letter-spacing: -1px;
+        }
+
+        .intro {
+            margin: 0 0 25px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .account-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        a.u {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            text-decoration: none;
+            color: var(--ink);
+            transition: border-color .2s, background .2s, transform .2s;
+        }
+
+        a.u:hover {
+            background: #F5F8F2;
+            border-color: #8BA994;
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            min-width: 0;
+        }
+
+        .user-info b {
+            display: block;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .user-info small {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        a.u .role {
+            flex-shrink: 0;
+            background: var(--forest);
+            color: #FFFFFF;
+            border-radius: 7px;
+            padding: 7px 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .notice {
+            margin-top: 23px;
+            padding-top: 17px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .notice strong {
+            color: var(--forest);
+        }
+
+        .footer {
+            padding: 17px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        @media (max-width: 520px) {
+            .top {
+                padding: 16px 20px;
+            }
+
+            .page {
+                padding: 25px 15px;
+                align-items: flex-start;
+            }
+
+            .box {
+                padding: 24px 20px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            a.u {
+                padding: 14px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top">
+        <div class="brand-mark">H</div>
+        <div>
+            <div class="brand-name">haven<span>.</span></div>
+            <small class="brand-tagline">FIND YOUR FOREVER FRIEND</small>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="box">
+            <span class="eyebrow">Development access</span>
+
+            <h1>Choose your account</h1>
+            <p class="intro">
+                Select a test account to explore Haven.
+                You can switch accounts whenever you need to.
+            </p>
+
+            <div class="account-list" id="list">
+                Loading available accounts...
+            </div>
+
+            <div class="notice">
+                <strong>Testing environment</strong><br>
+                These accounts are intended for local development.
+                Deployed environments use the configured sign-in system.
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        Haven · Animal Adoption Tracker
+    </footer>
+
+    <script>
+        fetch('/dev/users')
+            .then(r => {
+                if (!r.ok) throw new Error('Unable to load accounts');
+                return r.json();
+            })
+            .then(list => {
+                const el = document.getElementById('list');
+                el.replaceChildren();
+
+                if (!Array.isArray(list) || list.length === 0) {
+                    el.textContent = 'No test accounts are available.';
+                    return;
+                }
+
+                list.forEach(u => {
+                    const a = document.createElement('a');
+                    a.className = 'u';
+
+                    const next = u.roles.indexOf('Admin') >= 0
+                        ? '/landing/index.html'
+                        : '/portal/index.html';
+
+                    a.href = '/dev/login?user=' +
+                        encodeURIComponent(u.id) +
+                        '&next=' + encodeURIComponent(next);
+
+                    const info = document.createElement('div');
+                    info.className = 'user-info';
+
+                    const name = document.createElement('b');
+                    name.textContent = u.id;
+
+                    const hint = document.createElement('small');
+                    hint.textContent = 'Continue with this account';
+
+                    info.append(name, hint);
+
+                    const role = document.createElement('span');
+                    role.className = 'role';
+                    role.textContent = u.roles
+                        .map(r => r === 'User' ? 'Adopter' : r)
+                        .join(' / ');
+
+                    a.append(info, role);
+                    el.appendChild(a);
+                });
+            })
+            .catch(() => {
+                document.getElementById('list').textContent =
+                    'Test logins are not available here.';
+            });
+    </script>
+
+    <script src="/shared/i18n.js"></script>
+    <script src="/shared/session-bar.js"></script>
+</body>
+
+</html>
